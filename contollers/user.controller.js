@@ -1,10 +1,11 @@
-import UserService from '../services/user.service';
+import UserService from '../services/user.service.js';
 
 export class UserContoller {
 
 
     static async register(req, res, next) {
         try{
+            console.log(req.body);
             let { email, password, confirmPassword } = req.body;
 
             if(password != confirmPassword) res.status(400).send({error: "true", message: "password & confirm password don't match", data: {} });

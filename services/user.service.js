@@ -1,13 +1,12 @@
-import UserRepository from '../repository/user.repository';
-import AuthenticationService from '../Authentication';
+import UserRepository from '../repository/user.repository.js';
+import AuthenticationService from '../Authentication/index.js';
 
-export class UserService {
+export default class UserService {
 
 
     static async register({email, password}) {
         try{
-            let { email, password } = req.body;
-            let data = await UserRepository.register({email , password});
+            let data = await UserRepository.addUser({email , password});
             return data;
         }
         catch(err) {
@@ -29,7 +28,7 @@ export class UserService {
             
             // generate jwt
             let token = await AuthenticationService.generateToken(userData);
-            
+
             return token;
         }
         catch(err) {

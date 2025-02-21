@@ -1,12 +1,16 @@
 import jwt from "jsonwebtoken";
 import fs from 'node:fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 
-const privateKey = fs.readFileSync('./private_key.pem');
-const publicKey = fs.readFileSync('./public_key.pem');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const privateKey = fs.readFileSync(__dirname + '/private_key.pem');
+const publicKey = fs.readFileSync(__dirname + '/public_key.pem');
 
 
-export class AuthenticationService {
+export default class AuthenticationService {
 
 
     static async generateToken(data) {

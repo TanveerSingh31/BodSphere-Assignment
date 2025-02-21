@@ -1,13 +1,12 @@
-import { Users } from '../models';
-import AuthenticationService from '../Authentication';
+import { Users } from '../models.js';
+import AuthenticationService from '../Authentication/index.js';
 
-export class UserRepository {
+export default class UserRepository {
 
 
     static async addUser({email, password}) {
         try{
-            let { email, password } = req.body;
-            let data = await UserRepository.register({email , password});
+            let data = await Users.create({email , password});
             return data;
         }
         catch(err) {

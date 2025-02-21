@@ -1,5 +1,15 @@
 import express from 'express';
 const app = express();
+import {route} from './routes.js';
+
+
+app.use(
+    express.urlencoded({extended: true})
+);
+app.use(route);
+
+
+
 
 
 
