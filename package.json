@@ -1,0 +1,11 @@
+{
+  "name": "bodspere_assignment",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "node a\t"
+  },
+  "author": "Tanveer Singh",
+  "license": "ISC",
+  "description": ""
+}
