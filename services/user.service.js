@@ -31,8 +31,12 @@ export default class UserService {
             return token;
         }
         catch(err) {
-            throw err;
+            return res.status(400).send({error: "true", message: err.message, data: {} });
         }
     }
 
+
+    static async saveUserProfile({userId, name, profileImage, aboutUs }) {
+        await UserRepository.saveUserProfile({userId, name, profileImage, aboutUs });
+    }
 }

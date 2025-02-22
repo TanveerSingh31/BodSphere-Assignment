@@ -38,4 +38,9 @@ export default class UserRepository {
         }
     }
 
+
+    static async saveUserProfile({userId, name, profileImage, aboutUs }) {
+        return await model.Profile.create({userId, name, profileImage, aboutUs });
+    }
+
 }

@@ -12,11 +12,10 @@ const Users = mongoose.model("users", UserSchema);
 
 
 
-
   
   // Profile Model
 const ProfileSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "Registration", required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "Registration", required: true, unique: true },
     profileImage: { type: String }, // Store file path or URL
     name: { type: String, required: true },
     aboutUs: { type: String },
@@ -28,9 +27,7 @@ const Profile = mongoose.model("Profile", ProfileSchema);
   
   // Video Model
 const VideoSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "Registration", required: true },
-    thumbnail: { type: String }, // Store image file path or URL
-    video: { type: String, required: true }, // Store video file path or URL
+    fileName: { type: String, required: true }, // Store video file path or URL
     description: { type: String },
 });
 

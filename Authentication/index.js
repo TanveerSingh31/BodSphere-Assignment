@@ -43,25 +43,27 @@ export default class AuthenticationService {
     }
 
 
-    static async verifyToken(token) {
-        try{
-            const token = jwt.verify(token, publicKey);
-            return token;
-        }
-        catch(err) {
-            throw err;
-        }
+    static verifyToken(token) {
+
+        const data = jwt.verify(token, publicKey);
+        return data;
     }
 
 
     static async validateUser(req, res, next) {
-        const accessToken = req.headers?.authorization;
-        
-        if(!accessToken) throw new Error('Unauthorized request');
+        try{
+            const accessToken = req.headers?.authorization;
+            if(!accessToken) throw new Error('Unauthorized request');
 
-        console.log(accessToken);
-
-        next();
+            let userData = AuthenticationService.verifyToken(accessToken.split(' ')[1]);
+            if(userData) {
+                req.headers.userData = userData;
+                next();
+            }
+        }
+        catch(err) {
+            return res.status(400).send({error: "true", message: "Unauthorized request", data: {} });
+        }
     }
 
 }
