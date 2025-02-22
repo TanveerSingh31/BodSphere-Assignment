@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import fs from 'node:fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import UserRepository from '../repository/user.repository.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,9 +16,13 @@ export default class AuthenticationService {
 
     static async generateToken(data) {
         try{
-            const token = jwt.sign(data, privateKey, { algorithm: 'RS256' });
-            //TODO: save token to db
-            return token;
+            const accessToken = jwt.sign({userInfo : data}, privateKey, { algorithm: 'RS256', expiresIn: 600 });
+            const refreshToken = jwt.sign({userInfo : data}, privateKey, { algorithm: 'RS256' });
+            
+            //  save tokens to db
+            await UserRepository.saveUserTokens({accessToken, refreshToken});
+            
+            return {accessToken, refreshToken};
         }
         catch(err) {
             throw err;
@@ -46,6 +51,17 @@ export default class AuthenticationService {
         catch(err) {
             throw err;
         }
+    }
+
+
+    static async validateUser(req, res, next) {
+        const accessToken = req.headers?.authorization;
+        
+        if(!accessToken) throw new Error('Unauthorized request');
+
+        console.log(accessToken);
+
+        next();
     }
 
 }

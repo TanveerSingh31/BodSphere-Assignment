@@ -6,8 +6,10 @@ export default class UserService {
 
     static async register({email, password}) {
         try{
-            let data = await UserRepository.addUser({email , password});
-            return data;
+            let userFound = await UserRepository.getUserData({email});
+            if(userFound) throw new Error('Your profile already exists, please login');
+
+            let result = await UserRepository.addUser({email , password});
         }
         catch(err) {
             throw err;
@@ -17,13 +19,10 @@ export default class UserService {
 
     static async login({email, password}) {
         try{
-            let { email, password } = req.body;
+            let userData = await UserRepository.getUserData({email, password});
 
-            // get 
-            let userData = await UserRepository.getUserDetails({email});
-
-            if(!userData || userData?.password != password) {
-                throw Error(401, 'password doesnot match');
+            if(!userData) {
+                throw Error('email or password is incorrect');
             }
             
             // generate jwt

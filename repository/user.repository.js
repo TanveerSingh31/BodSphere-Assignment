@@ -1,4 +1,4 @@
-import { Users } from '../models.js';
+import model from '../Models/models.js';
 import AuthenticationService from '../Authentication/index.js';
 
 export default class UserRepository {
@@ -6,7 +6,8 @@ export default class UserRepository {
 
     static async addUser({email, password}) {
         try{
-            let data = await Users.create({email , password});
+            console.log({email, password});
+            let data = await model.Users.create({email , password});
             return data;
         }
         catch(err) {
@@ -15,11 +16,22 @@ export default class UserRepository {
     }
 
 
-    static async getUserData({email}) {
+    static async getUserData({email, password}) {
         try{
-            // get 
-            let userData = await Users.findOne({email});
+            let userData = await model.Users.findOne({email, ...(password && {password})}, 'email');
             return userData;
+        }
+        catch(err) {
+            throw err;
+        }
+    }
+
+
+
+
+    static async saveUserTokens({email ,accessToken, refreshToken}) {
+        try{
+            await model.Users.updateOne({accessToken, refreshToken}, {email});
         }
         catch(err) {
             throw err;
